@@ -1,0 +1,46 @@
+#include <stdio.h>
+int main()
+{
+    int n, frame;
+    printf("Enter the no. of process : ");
+    scanf("%d", &n);
+    int s[n];
+    printf("Enter the processes : ");
+    for(int i = 0; i < n; i++)
+    {
+        scanf("%d", &s[i]);
+    }
+    printf("Enter the frame : ");
+    scanf("%d", &frame);
+    int ram[frame];
+    for(int i = 0; i < frame; i++)
+    {
+        ram[i] = -1;
+    }
+    int fault = 0;
+    int hit = 0;
+    int track = 0;
+
+    for(int i = 0; i < n; i++)
+    {
+        int flag = 0 ;
+        for(int j = 0; j < frame; j++)
+        {
+            if(ram[j] == s[i]) 
+            { 
+                flag = 1;
+                hit++;
+                break;
+            }
+        }
+        if(flag == 0) 
+        {
+            ram[track] = s[i];
+            fault++;
+            track = (track+1)%frame;
+        }
+    }
+    printf("\nTotal Page faults : %d", fault);
+    printf("\nTotal Page hits : %d", hit);
+    return 0;
+}

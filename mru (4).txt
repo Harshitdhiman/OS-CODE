@@ -1,0 +1,62 @@
+#include <stdio.h>
+
+int main()
+{
+    int n, frame;
+    printf("Enter the no. of process : ");
+    scanf("%d", &n);
+    int s[n];
+    printf("Enter the processes: ");
+    for(int i = 0; i < n; i++)
+    {
+        scanf("%d", &s[i]);
+    }
+
+    printf("Enter the frame : ");
+    scanf("%d", &frame);
+
+    int ram[frame];
+
+    for(int i = 0; i < frame; i++)
+    {
+        ram[i] = -1;
+    }
+    int fault = 0;
+    int hit = 0;
+    int isfull = 0; // keeps track of how many pages are filled
+    int MRU = 0;    // keeps track of the index of the MRU page
+
+    for(int i = 0; i < n; i++)
+    {
+        int temp = 0;
+        for(int j = 0; j < isfull; j++) // check all the pages that are filled
+        {
+            if(ram[j] == s[i]) // page hit
+            {
+                hit++;
+                MRU = j;
+                temp = 1;
+                break;
+            }
+        }
+        if(temp==0){
+            fault++;
+        if(isfull == frame) 
+        {
+                ram[MRU] = s[i];
+        }
+        else 
+        {
+                ram[isfull] = s[i];
+                MRU = isfull;
+                isfull++;
+        }
+
+        }
+    }
+
+    printf("\nTotal Page faults : %d", fault);
+    printf("\nTotal Page hits : %d", hit);
+
+    return 0;
+}

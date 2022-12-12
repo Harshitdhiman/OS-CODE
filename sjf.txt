@@ -1,0 +1,70 @@
+#include<stdio.h>
+#define max 30
+
+int main(){
+    int n,bt[max],at[max],new_bt[max]={0},new_at[max]={0},wt[max],tat[max],ct[max];
+  float awt=0 , atat=0 ;
+
+  printf("Enter the number of process: ");
+  scanf("%d",&n );
+
+  printf("enter the arrival time of process: ");
+  for(int i=0 ; i<n ; i++)
+  scanf("%d",&at[i]);
+
+  printf("enter the burst time of process: ");
+  for( int i=0 ; i<n ; i++)
+  scanf("%d",&bt[i]);
+
+  int cuur_time=0;
+  int completed=0;
+  int required_index;
+  int visited[10]={0};
+
+
+  while(completed<n){
+        int burst=100;
+        int cheak=0;
+    for(int i=0;i<n;i++){
+        if(visited[i]!=1 && at[i]<=cuur_time){
+            if(bt[i]<burst){
+                cheak=1;
+                burst=bt[i];
+                required_index=i;
+            }
+        }
+    }
+        if(cheak==1){
+            visited[required_index]=1;
+            new_at[completed]=at[required_index];
+            new_bt[completed]=bt[required_index];
+            cuur_time+=bt[required_index];
+            completed++;
+        }
+        else{
+            cuur_time++;
+        }
+    }
+  
+  for(int i=0;i<n;i++){
+
+    printf("%d  %d\n",new_at[i],new_bt[i]);
+  }
+
+  printf("\n\n");
+  printf("AT\t\t BT\t\t TAT\t\t WT\n");
+
+  for(int i=0 ; i<n ;i++){
+    wt[i]=0;
+    tat[i]=0;
+    ct[i+1]=ct[i]+new_bt[i];
+    tat[i]=ct[i+1]-new_at[i];
+    wt[i]=tat[i]-new_bt[i];
+    awt=awt+wt[i];
+    atat=atat+tat[i];
+    printf(" %d\t\t %d\t\t %d\t\t %d\n",new_at[i],new_bt[i],tat[i],wt[i]);
+  }
+
+  printf("average wt = %f\n",awt/n);
+  printf("average tat = %f",atat/n);
+}
